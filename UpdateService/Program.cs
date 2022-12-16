@@ -7,14 +7,11 @@ internal class Program
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         IConfigurationBuilder configBuilder = new ConfigurationBuilder()
-        .SetBasePath(Directory.GetCurrentDirectory())
         .AddEnvironmentVariables();
-
-        IConfiguration config = configBuilder.Build();
 
         // Add services to the container.
 
-        builder.Services.AddSingleton<IConfiguration>(provider => config);
+        builder.Services.AddSingleton<IConfiguration>(provider => configBuilder.Build());
         builder.Services.AddInfrastructureServices();
 
         builder.Services.AddControllers();
