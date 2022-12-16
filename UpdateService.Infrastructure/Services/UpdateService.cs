@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UpdateService.Domain;
 using UpdateService.Domain.Services.Interfaces;
 using UpdateService.Domain.Services.Storage.Interfaces;
 
@@ -14,13 +15,8 @@ namespace UpdateService.Infrastructure.Services
             _updateStorage = updateStorage;
         }
 
-        public async Task<byte[]> UpdateAsync(Version version)
+        public async Task<NewVersion> UpdateAsync(Version version)
         {
-            if (version == null || (version.Major == 0 && version.Minor == 0 && version.Build == 0))
-            {
-                version = new Version(1, 0, 0);
-            }
-
             return await _updateStorage.GetVersion(version);
         }
     }

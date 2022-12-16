@@ -2,17 +2,17 @@
 
 namespace UpdateService.Domain.Exceptions
 {
-    public class VersionDoesNotExistException : Exception
+    public class NoHigherVersionFoundException : Exception
     {
-        public VersionDoesNotExistException()
+        public NoHigherVersionFoundException()
         {
         }
 
-        public VersionDoesNotExistException(string message) : base(message)
+        public NoHigherVersionFoundException(string message) : base(message)
         {
         }
 
-        public VersionDoesNotExistException(string message, Exception innerException) : base(message, innerException)
+        public NoHigherVersionFoundException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

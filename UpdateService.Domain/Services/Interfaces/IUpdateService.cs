@@ -5,6 +5,6 @@ namespace UpdateService.Domain.Services.Interfaces
 {
     public interface IUpdateService
     {
-        Task<byte[]> UpdateAsync(Version version);
+        Task<NewVersion> UpdateAsync(Version version);
     }
 }

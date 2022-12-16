@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using UpdateService.Domain;
 using UpdateService.Domain.Exceptions;
 using UpdateService.Domain.Services.Storage.Interfaces;
 
@@ -50,14 +51,21 @@ namespace UpdateService.Infrastructure.Services.Storage
             return Task.FromResult(versions);
         }
 
-        public Task<byte[]> GetVersion(Version version)
+        public Task<NewVersion> GetVersion(Version version)
         {
-            string versionDirectory;
+            string versionDirectory = string.Empty;
+            string versionNumber = string.Empty;
 
             try
             {
-                versionDirectory = Directory.GetDirectories(_path)
-                    .FirstOrDefault(directory => version.ToString(3) == Path.GetFileName(directory));
+                foreach (string item in Directory.GetDirectories(_path))
+                {
+                    versionNumber = Path.GetFileName(item);
+                    if (version.CompareTo(new Version(versionNumber)) < 0)
+                    {
+                        versionDirectory = item;
+                    }
+                }
             }
             catch (Exception)
             {
@@ -66,19 +74,23 @@ namespace UpdateService.Infrastructure.Services.Storage
 
             if (string.IsNullOrWhiteSpace(versionDirectory))
             {
-                throw new VersionDoesNotExistException($"Version {version} does not exist");
+                throw new NoHigherVersionFoundException($"Version {version} does not exist");
             }
 
             try
             {
-                string filePath = $@"{versionDirectory}\{_fileName}";
+                string filePath = Path.Combine(versionDirectory, _fileName);
 
                 if (!File.Exists(filePath))
                 {
                     throw new FileNotFoundException(filePath);
                 }
 
-                return Task.FromResult(File.ReadAllBytes(filePath));
+                return Task.FromResult(new NewVersion
+                {
+                    VersionNumber = versionNumber,
+                    Data = File.ReadAllBytes(filePath)
+                });
             }
             catch (Exception)
             {

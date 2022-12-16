@@ -7,6 +7,6 @@ namespace UpdateService.Domain.Services.Storage.Interfaces
     public interface IUpdateStorage
     {
         Task<List<Version>> GetAllAvailableVersions();
-        Task<byte[]> GetVersion(Version version);
+        Task<NewVersion> GetVersion(Version version);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UpdateService.Domain;
 using UpdateService.Domain.Exceptions;
 using UpdateService.Domain.Services.Interfaces;
 
@@ -16,7 +17,7 @@ namespace UpdateService.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int major, [FromQuery] int minor, [FromQuery] int bugfix)
+        public async Task<ActionResult<NewVersion>> Get([FromQuery] int major, [FromQuery] int minor, [FromQuery] int bugfix)
         {
             if (major < 0 || minor < 0 || bugfix < 0)
             {
@@ -25,13 +26,11 @@ namespace UpdateService.Controllers
 
             try
             {
-                byte[] data = await _updateService.UpdateAsync(new Version(major, minor, bugfix));
-
-                return File(data, "application/vnd.microsoft.portable-executable");
+                return await _updateService.UpdateAsync(new Version(major, minor, bugfix));
             }
-            catch (VersionDoesNotExistException)
+            catch (NoHigherVersionFoundException)
             {
-                return NotFound("Version does not exist");
+                return NotFound("Version is up to date");
             }
             catch (Exception)
             {
