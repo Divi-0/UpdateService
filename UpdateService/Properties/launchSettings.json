@@ -9,14 +9,15 @@
     }
   },
   "profiles": {
-    "http": {
+    "UpdateService": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchBrowser": false,
       "applicationUrl": "http://localhost:5130",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "FILE_SYSTEM_PATH": "C:\\Probetag\\Files",
+        "FILE_NAME": "app.exe"
       }
     },
     "IIS Express": {

@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\UpdateService.Domain\UpdateService.Domain.csproj" />
+    <ProjectReference Include="..\UpdateService.Infrastructure\UpdateService.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
